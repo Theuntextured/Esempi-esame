@@ -27,5 +27,38 @@
 ## ! " # $ % & ' ( ) * + , - . / : ; < = > ? @ [ \ ] ^ _ ` { | } ~
 
 
-print(open('hashtags.csv', 'r').read())
-print()
+import csv
+
+day1Tags = {}
+day2Tags = {}
+
+day1Tags.setdefault(0,0)
+
+with open('hashtags.csv', 'r') as csvFile:
+    reader = csv.reader(csvFile, delimiter=" ")
+    day1 = None 
+
+    for r in reader:
+        if day1 == None:
+            day1 = r[0] #data is in chronological order, so I can do this.
+        targetDict = day1Tags if r[0] == day1 else day2Tags #create alias of the desired map to edit
+        for h in r[2:]: #hashtags start from index 2
+            if h not in targetDict:
+                targetDict[h] = 1 #create
+            else:
+                targetDict[h] += 1
+
+hashTagGrowth = []
+
+for (key, item) in day1Tags.items():
+    if key not in day2Tags:
+        continue
+    growth = round((float(day2Tags[key]) / float(item) - 1) * 100)
+    if growth >= 50:
+        hashTagGrowth.append((key, growth))
+
+hashTagGrowth.sort(key=lambda val : val[1], reverse=True)
+
+print("Hashtag in tendenza:")
+for (tag, percent) in hashTagGrowth:
+    print(f"{tag} con un'incremento del {percent}%")

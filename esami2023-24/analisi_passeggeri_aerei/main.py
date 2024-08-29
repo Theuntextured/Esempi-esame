@@ -26,6 +26,40 @@
 # print(string.punctuation)
 ## ! " # $ % & ' ( ) * + , - . / : ; < = > ? @ [ \ ] ^ _ ` { | } ~
 
+import csv
 
-print(open('passeggeri.txt', 'r').read())
+#set up data in list so it is easier to use later on
+with open('passeggeri.txt', 'r') as file:
+    passengers = list(csv.DictReader(file))
+
+destination_age_data = {}
+flight_passenger_data = {}
+
+for p in passengers:
+    origine = p["origin"]
+    if origine not in destination_age_data:
+        destination_age_data[origine] = []
+    destination_age_data[origine].append(float(p["age"]))
+
+    flightNum = p["flight_number"]
+    if flightNum not in flight_passenger_data:
+        flight_passenger_data[flightNum] = [0,0] #0: male, 1: female. note: this is not a tuple because I need to be able to modify the elements
+    flight_passenger_data[flightNum][int(p["gender"] == "F")] += 1
+
+flight_passenger_data = list(flight_passenger_data.items())
+flight_passenger_data = sorted(flight_passenger_data, key = lambda element : element[1][0] + element[1][1], reverse=True)[0] #get highest number of passengers
+
+for (key, value) in destination_age_data.items():
+    destination_age_data[key] = sum(value) / len(value) #from list, make average
+
+destination_age_data = list(destination_age_data.items()) #convert to list
+
+destination_age_data.sort(key=lambda element : element[1], reverse=True)
+
+print("Average ages for each destination:")
+for (origin, age) in destination_age_data:
+    print(f"Origin: {origin}, Average age: {round(age, 1)}")
+
 print()
+
+print(f"The most popular flight is {flight_passenger_data[0]} with {flight_passenger_data[1][0]} male and {flight_passenger_data[1][1]} female passengers.")

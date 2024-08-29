@@ -1,35 +1,73 @@
-﻿# Write your solution here, DO NOT START A NEW PROJECT
-# ATTENTION: if you create a new project, your exam paper will not be collected
-#            and you will be obliged to come in the subsequent exam session
-#
-# ATTENTION: on Win 10 (Italian keyboard) characters like [ ] { } have to be
-#            created using ALTgr+è (e.g. for [ ) and NOT CTRL-ALT-è
-#
-# ATTENTION: on macOS you have to use CTRL-C and CTRL-V inside the virtual
-#            machine and NOT command-C command-V
-#
-# if your keyboard is broken you can do copy/paste also with mouse
-# and you can copy special characters like [ ] { } < > here
-#
-# Scrivete qui la vostra soluzione, NON CREATE UN NUOVO PROGETTO
-# ATTENZIONE: se create un nuovo progetto il vostro compito non sara'
-#             raccolto correttamente e dovrete tornare all'appello successivo
-#
-# ATTENZIONE: su Win 10 (tastiera italiana) i caratteri speciali (es. { ) vanno
-#             scritti ad esempio con ALTgr+è (caso di [ ) e NON CTRL-ALT-è
-#
-# ATTENZIONE: su macOS vanno usati CRTL-C e CTRL-V per il copia incolla
-#                       nella macchina virtuale e NON command-C command-V
-#
-# se la vostra tastiera è guasta potete fare copia/incolla anche con il mouse
-# e per i caratteri speciali potete copiare da questi caratteri  [  ]  {  }  <  >
-# print(string.punctuation)
+﻿# e per i caratteri speciali potete copiare da questi caratteri  [  ]  {  }  <  >
 ## ! " # $ % & ' ( ) * + , - . / : ; < = > ? @ [ \ ] ^ _ ` { | } ~
 
+#DEFINE FUNCTIONS
 
-print(open('cart.dat', 'r').read())
+def isSubList(outer : list, subList : list) -> bool:
+    o = outer.copy()
+    for s in subList:
+        if s not in o:
+            return False
+        o.remove(s)
+    return True
+
+#END DEFINE FUNCTIONS
+
+
+#SET UP INPUT DATA
+
+pricesFile = open('prices.dat', 'r')
+
+prices = {}
+for l in pricesFile:
+    (shellName, shellPrice) = l.split(": ")
+    prices[shellName] = float(shellPrice)
+pricesFile.close()
+
+offersFile = open('offers.dat', 'r')
+offers = [] #has to be an array rather than dict: multiple offers can lead to same gift and another list is not hashable
+#each element is tuple with format: (requirements, gift)
+for l in offersFile:
+    (requirementsStr, gift) = l.rstrip().split(": ")
+    requirements = requirementsStr.split()
+    tempArr = []
+    for r in requirements:
+        tempArr.append(r)
+    offers.append((tempArr, gift))
+offersFile.close()
+
+cartFile = open('cart.dat', 'r')
+cart = []
+for l in cartFile:
+    cart.append(l.rstrip())
+cartFile.close()
+
+#FINISHED SETTING UP INPUT DATA
+
+usableInOffer = cart.copy() #for now make a copy, as offers are found, remove items from here
+print(cart)
 print()
-print(open('offers.dat', 'r').read())
+print(prices)
 print()
-print(open('prices.dat', 'r').read())
+print(offers)
 print()
+for (index, (requirements, gift)) in enumerate(offers):
+    finishedApplyingOffers = False
+    while not finishedApplyingOffers: #can apply an offer more than once
+        if isSubList(usableInOffer, requirements):
+            for e in requirements: 
+                usableInOffer.remove(e)
+            if gift in usableInOffer:
+                usableInOffer.remove(gift)
+            if gift in cart:
+                cart.remove(gift)
+            print(f"By purchasing {str(requirements).strip("[]").replace("'", "")}; you have receuved {gift} as a gift.")
+        else:
+            finishedApplyingOffers = True
+
+finalPrice = 0.0
+for c in cart:
+    finalPrice += prices[c]
+
+print(f"The final price is {finalPrice}.")
+print(cart)

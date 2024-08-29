@@ -1,4 +1,4 @@
-nome_passeggero,età,sesso,origine,destinazione,numero_volo
+passenger_name,age,gender,origin,destination,flight_number
 Michael Jackson,50,M,Chicago,Miami,AA123
 Beyoncé,35,F,Miami,Chicago,AA124
 John Smith,30,M,New York,Los Angeles,UA123

@@ -1,0 +1,33 @@
+Green Group:
+Day 1:
+Djokovic vs Medvedev
+Medvedev vs Tsitsipas
+Tsitsipas vs Rune
+Rune vs Djokovic
+Day 2:
+Djokovic vs Tsitsipas
+Medvedev vs Rune
+Tsitsipas vs Djokovic
+Rune vs Medvedev
+Day 3:
+Djokovic vs Rune
+Medvedev vs Djokovic
+Tsitsipas vs Medvedev
+Rune vs Tsitsipas
+
+Red Group:
+Day 1:
+Alcaraz vs Sinner
+Sinner vs Rublev
+Rublev vs Zverev
+Zverev vs Alcaraz
+Day 2:
+Alcaraz vs Rublev
+Sinner vs Zverev
+Rublev vs Alcaraz
+Zverev vs Sinner
+Day 3:
+Alcaraz vs Zverev
+Sinner vs Alcaraz
+Rublev vs Sinner
+Zverev vs Rublev
